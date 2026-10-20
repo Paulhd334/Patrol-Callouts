@@ -13,14 +13,10 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Planned Callouts](#planned-callouts)
-- [Implementation Status](#implementation-status)
-- [Tech Stack](#tech-stack)
-- [How to Contribute](#how-to-contribute)
-- [Credits](#credits)
-
----
+| | | | | |
+|---|---|---|---|---|
+| [Overview](#overview) | · | [Planned Callouts](#planned-callouts) | · | [Implementation Status](#implementation-status) |
+| [Tech Stack](#tech-stack) | · | [Credits](#credits) | | |
 
 ## Overview
 
@@ -64,7 +60,7 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 **8. Disturbing Disappearance**  
 > A person is reported missing and their relatives have had no news. Officers must gather testimonies, search for the person's vehicle, and follow clues to try to find them.
 
-**9. The Mysterious Case** *(multi-part arc)*  
+**9. The Mysterious Case**   
 > Several seemingly unrelated interventions gradually lead to the same investigation. Officers must preserve evidence, cross-reference testimonies, and identify links between different suspects.
 
 ---
