@@ -14,11 +14,9 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Police Menu](#police-menu)
 - [Planned Callouts](#planned-callouts)
 - [Implementation Status](#implementation-status)
 - [Tech Stack](#tech-stack)
-- [How to Install](#how-to-install)
 - [How to Contribute](#how-to-contribute)
 - [License](#license)
 - [Credits](#credits)
