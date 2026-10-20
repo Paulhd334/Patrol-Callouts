@@ -13,11 +13,10 @@
 
 ## Table of Contents
 
-## Table of Contents
-
-**[Overview](#overview)** · **[Planned Callouts](#planned-callouts)** · **[Implementation Status](#implementation-status)** · **[Tech Stack](#tech-stack)** · **[Credits](#credits)**
-## Overview
-
+| Section | Section | Section |
+| :--- | :--- | :--- |
+| [Overview](#overview) | [Planned Callouts](#planned-callouts) | [Implementation Status](#implementation-status) |
+| [Tech Stack](#tech-stack) | [Credits](#credits) | |
 This README is the **roadmap**: every callout listed here is planned. Some are already prototyped (`ArmoredVehiclePursuit`, `VehiculeEnPanne`), the rest are on the backlog.
 
 **Patrols Callouts** is built on top of the **LSPDFR** framework and **RAGE Plugin Hook**, and follows a strict "one class per callout" architecture so that each scenario can be developed, tested, and reviewed independently.
