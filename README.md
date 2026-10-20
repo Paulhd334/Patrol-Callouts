@@ -152,6 +152,13 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 | **GitHub** | Hébergement du code |
 
 
+---
 
+## Credits
+
+- **UNWARE STUDIO** — Concept & development
+- **Thomas** — Updates & maintenance
+
+---
 ---
 
