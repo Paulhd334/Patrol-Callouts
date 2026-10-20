@@ -13,11 +13,14 @@
 
 ## Table of Contents
 
-| Section | Section | Section |
-| :--- | :--- | :--- |
-| [Overview](#overview) | [Planned Callouts](#planned-callouts) | [Implementation Status](#implementation-status) |
-| [Tech Stack](#tech-stack) | [Credits](#credits) | |
-This README is the **roadmap**: every callout listed here is planned. Some are already prototyped (`ArmoredVehiclePursuit`, `VehiculeEnPanne`), the rest are on the backlog.
+[![Overview](https://img.shields.io/badge/Overview-grey?style=for-the-badge)](#overview)
+[![Planned Callouts](https://img.shields.io/badge/Planned_Callouts-grey?style=for-the-badge)](#planned-callouts)
+[![Implementation Status](https://img.shields.io/badge/Implementation_Status-grey?style=for-the-badge)](#implementation-status)
+[![Tech Stack](https://img.shields.io/badge/Tech_Stack-grey?style=for-the-badge)](#tech-stack)
+[![Credits](https://img.shields.io/badge/Credits-grey?style=for-the-badge)](#credits)
+
+
+
 
 **Patrols Callouts** is built on top of the **LSPDFR** framework and **RAGE Plugin Hook**, and follows a strict "one class per callout" architecture so that each scenario can be developed, tested, and reviewed independently.
 
