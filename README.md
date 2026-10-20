@@ -13,11 +13,9 @@
 
 ## Table of Contents
 
-| | | | | |
-|---|---|---|---|---|
-| [Overview](#overview) | · | [Planned Callouts](#planned-callouts) | · | [Implementation Status](#implementation-status) |
-| [Tech Stack](#tech-stack) | · | [Credits](#credits) | | |
+## Table of Contents
 
+**[Overview](#overview)** · **[Planned Callouts](#planned-callouts)** · **[Implementation Status](#implementation-status)** · **[Tech Stack](#tech-stack)** · **[Credits](#credits)**
 ## Overview
 
 This README is the **roadmap**: every callout listed here is planned. Some are already prototyped (`ArmoredVehiclePursuit`, `VehiculeEnPanne`), the rest are on the backlog.
