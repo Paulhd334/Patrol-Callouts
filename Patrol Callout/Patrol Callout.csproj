@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<RootNamespace>SuperPoursuiteCallout</RootNamespace>
+		<AssemblyName>SuperPoursuiteCallout</AssemblyName>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RagePluginHook" Version="1.124.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="LSPD First Response">
+			<HintPath>..\..\..\..\Program Files\Epic Games\GTAV\plugins\LSPD First Response.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="RagePluginHook">
+			<HintPath>..\..\..\..\Program Files\Epic Games\GTAV\RAGEPluginHook.exe</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

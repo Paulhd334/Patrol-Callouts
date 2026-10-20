@@ -1,0 +1,26 @@
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\bin\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\bin\x64\Release\net48\SuperPoursuiteCallout.pdb
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\bin\x64\Release\net48\RagePluginHook.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\bin\x64\Release\net48\LSPD First Response.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\bin\x64\Release\net48\LSPD First Response.pdb
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.csproj.AssemblyReference.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.AssemblyInfoInputs.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.AssemblyInfo.cs
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.csproj.CoreCompileInputs.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPou.331505F5.Up2Date
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout\obj\x64\Release\net48\SuperPoursuiteCallout.pdb
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\bin\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\bin\x64\Release\net48\SuperPoursuiteCallout.pdb
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\bin\x64\Release\net48\RagePluginHook.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\bin\x64\Release\net48\LSPD First Response.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\bin\x64\Release\net48\LSPD First Response.pdb
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.csproj.AssemblyReference.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.AssemblyInfoInputs.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.AssemblyInfo.cs
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.csproj.CoreCompileInputs.cache
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPou.331505F5.Up2Date
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\SuperPoursuiteCallout_Code\obj\x64\Release\net48\SuperPoursuiteCallout.pdb

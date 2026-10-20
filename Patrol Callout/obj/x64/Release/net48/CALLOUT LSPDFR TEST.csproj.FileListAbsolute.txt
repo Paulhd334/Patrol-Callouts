@@ -1,0 +1,26 @@
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\bin\x64\Release\net48\CALLOUT LSPDFR TEST.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\bin\x64\Release\net48\CALLOUT LSPDFR TEST.pdb
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\bin\x64\Release\net48\RagePluginHook.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\bin\x64\Release\net48\LSPD First Response.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\bin\x64\Release\net48\LSPD First Response.pdb
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.csproj.AssemblyReference.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.AssemblyInfoInputs.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.AssemblyInfo.cs
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.csproj.CoreCompileInputs.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT .6BE9A1E4.Up2Date
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.pdb
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.csproj.AssemblyReference.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.AssemblyInfoInputs.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.AssemblyInfo.cs
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT LSPDFR TEST.csproj.CoreCompileInputs.cache
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\bin\x64\Release\net48\RagePluginHook.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\bin\x64\Release\net48\LSPD First Response.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\bin\x64\Release\net48\LSPD First Response.pdb
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\CALLOUT .6BE9A1E4.Up2Date
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\bin\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\bin\x64\Release\net48\SuperPoursuiteCallout.pdb
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\SuperPoursuiteCallout.dll
+C:\Users\vanca\Desktop\CALLOUT LSPDFR TEST\obj\x64\Release\net48\SuperPoursuiteCallout.pdb

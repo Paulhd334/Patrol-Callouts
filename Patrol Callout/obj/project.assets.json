@@ -1,0 +1,104 @@
+{
+  "version": 4,
+  "targets": {
+    "net48": {
+      "RagePluginHook/1.124.0": {
+        "type": "package",
+        "compile": {
+          "lib/net472/RagePluginHook.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net472/RagePluginHook.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RagePluginHook/1.124.0": {
+      "sha512": "5AhyB707P2yu6VkMQ7OIQ9MPt9NsCL2WOsM/4dchjKleK7EAbT/d5OfI6j1h9stK/l2Yrxyrbt/z0GUGjNCrPw==",
+      "type": "package",
+      "path": "ragepluginhook/1.124.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/RagePluginHook.dll",
+        "lib/net472/RagePluginHook.xml",
+        "licenses/DotNetZip.license",
+        "licenses/FW1FontWrapper.license",
+        "licenses/Gwen.license",
+        "licenses/Mono.Cecil.license",
+        "licenses/SlimDX.license",
+        "licenses/license.txt",
+        "ragepluginhook.1.124.0.nupkg.sha512",
+        "ragepluginhook.nuspec",
+        "readme.md",
+        "rph.png"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net48": [
+      "RagePluginHook >= 1.124.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\vanca\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\Patrol Callout.csproj",
+      "projectName": "SuperPoursuiteCallout",
+      "projectPath": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\Patrol Callout.csproj",
+      "packagesPath": "C:\\Users\\vanca\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\vanca\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net48"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net48": {
+          "framework": "net48",
+          "targetAlias": "net48",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "10.0.400"
+    },
+    "frameworks": {
+      "net48": {
+        "framework": "net48",
+        "targetAlias": "net48",
+        "dependencies": {
+          "RagePluginHook": {
+            "target": "Package",
+            "version": "[1.124.0, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

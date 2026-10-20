@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Éléments de solution/">
+    <File Path="ConvoiBlinde.cs" />
+    <File Path="Highspeedpursuit2.cs" />
+    <File Path="HighSpeedPursuit3.cs" />
+    <File Path="Main.cs" />
+    <File Path="PoursuitePleineVitesse.cs" />
+  </Folder>
+  <Project Path="CALLOUT LSPDFR TEST.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "SeMndGne3xk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\Patrol Callout.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vanca\\.nuget\\packages\\ragepluginhook\\1.124.0\\ragepluginhook.1.124.0.nupkg.sha512"
+  ],
+  "logs": []
+}
