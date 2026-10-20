@@ -33,25 +33,12 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 
 ---
 
-## Police Menu
-
-**Patrols Callouts — Police Menu**
-
-A main menu giving quick access to:
-
-- **Traffic stops** — check license, insurance, registration, vehicle condition, sobriety and driver documents.
-- **Fines & citations** — issue tickets directly from the menu.
-- **Arrests** — search a suspect, check identity, discover illegal items, and select an arrest reason.
-- **Backup requests** — call additional units, specialized support, or a tow truck.
-- **Roadside services** — request a tow, ambulance, or fire department depending on the situation.
-
----
 
 ## Planned Callouts
 
 ### Traffic & Roadside
 
-**1. Broken Down Vehicle on the Highway** *(in progress — `VehiculeEnPanne.cs`)*  
+**1. Broken Down Vehicle on the Highway** *(in progress — `BrokenDownVehicle.cs`)*  
 > A driver is stranded on the emergency lane. Officers must secure the area, interview the driver, and call a tow truck if needed. The driver may be cooperative, panicked, or hiding something.
 
 **2. Suspect Truck on the Highway**  
@@ -65,18 +52,6 @@ A main menu giving quick access to:
 
 ---
 
-### Arrests & Suspects
-
-**5. Realistic Arrests** *(part of the police menu)*  
-> Search a suspect, discover possible illegal items, verify their identity, and select the reason for arrest.
-
-**6. Barricaded Suspect in a House**  
-> A wanted person barricades themselves in a residence and refuses to come out. Officers must secure the perimeter, attempt dialogue, and request a specialized unit if necessary.
-
-**7. Organized Vehicle Theft**  
-> Several similar vehicles have been reported stolen. Officers must recover the vehicles, identify suspects, and possibly uncover a clandestine storage location.
-
----
 
 ### Investigations
 
@@ -138,9 +113,9 @@ A main menu giving quick access to:
 
 | # | Callout | Status |
 |---|---------|--------|
-| 1 | Broken Down Vehicle on Highway | In progress (`VehiculeEnPanne.cs`) |
+| 1 | Broken Down Vehicle on Highway | In progress (`BrokenDownVehicle.cs`) |
 | 2 | Suspect Truck on Highway | Backlog |
-| 3 | Abandoned Vehicle in Countryside | Backlog |
+| 3 | Abandoned Vehicle in Countryside |
 | 4 | Suspicious Gas Station | Backlog |
 | 6 | Barricaded Suspect | Backlog |
 | 7 | Organized Vehicle Theft | Backlog |
