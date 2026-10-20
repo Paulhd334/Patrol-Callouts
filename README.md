@@ -52,29 +52,29 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 
 ### Investigations
 
-**8. Hit-and-Run Accident**  
+**5. Hit-and-Run Accident**  
 > Two vehicles are involved in an accident, but one driver has fled. Officers must interview witnesses, collect information, and search for the fleeing vehicle.
 
-**9. Witness Who Disappears**  
+**6. Witness Who Disappears**  
 > A witness to an assault refuses to cooperate and leaves the scene. Officers must find them again and verify the information they provided.
 
-**10. Suspicious Object Found**  
+**7. Suspicious Object Found**  
 > A passerby reports an abandoned bag in an alley. Officers must secure the perimeter, look for the owner, and call the appropriate services depending on the situation.
 
-**11. Disturbing Disappearance**  
+**8. Disturbing Disappearance**  
 > A person is reported missing and their relatives have had no news. Officers must gather testimonies, search for the person's vehicle, and follow clues to try to find them.
 
-**12. The Mysterious Case** *(multi-part arc)*  
+**9. The Mysterious Case** *(multi-part arc)*  
 > Several seemingly unrelated interventions gradually lead to the same investigation. Officers must preserve evidence, cross-reference testimonies, and identify links between different suspects.
 
 ---
 
 ### Public Order
 
-**13. Person in Distress**  
+**10. Person in Distress**  
 > A disoriented person asks for police help. Officers must verify their identity, try to locate their relatives, or request medical assistance if needed.
 
-**14. Bus Incident — Passenger with Feet on the Seats**  
+**11. Bus Incident — Passenger with Feet on the Seats**  
 > A bus driver contacts the police after noticing a passenger placing their feet on passenger seats. Officers must listen to the driver, talk to the passenger, and ask them to remove their feet to respect cleanliness and good conduct rules in public transport.
 
 > Several scenarios can occur: the passenger cooperates immediately, refuses to comply, or becomes disruptive. Depending on the situation, officers can remind the rules, ask the passenger to leave the bus according to applicable procedures, or request backup if the incident escalates. The objective is a realistic intervention where dialogue is the priority, and the response is adapted to the passenger's behavior.
@@ -83,28 +83,17 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 
 ### Accidents & Incidents
 
-**15. Accident Involving a Police Vehicle**  
+**12. Accident Involving a Police Vehicle**  
 > A patrol car is involved in an accident. Officers must secure the scene, assist the officers involved, and determine the circumstances of the accident.
 
-**16. Suspicious Abandoned Vehicle**  
+**13. Suspicious Abandoned Vehicle**  
 > A car is found with the engine running, doors open, and no driver nearby. Officers must examine the scene and look for clues that could lead to another intervention.
 
-**17. Warehouse Intrusion**  
+**14. Warehouse Intrusion**  
 > An alarm goes off in an industrial area. On arrival, officers must check the premises and determine whether it is a false alarm, an intrusion, or part of a larger criminal operation.
 
 ---
 
-### Special Scenarios
-
-**18. Armored Vehicle Pursuit** *(in progress — `ArmoredVehiclePursuit.cs`)*  
-> A full-chase pursuit of a heavily armored vehicle with two occupants, including a turret gunner. Standard PIT maneuvers may be ineffective.
-
-**19. Highway Broken-Down Vehicle — Tow Required** *(variant of #1)*  
-> Same as #1, but with a mandatory tow-truck service and a longer on-scene interaction.
-
-*(More scenarios will be added as the project grows.)*
-
----
 
 ## Implementation Status
 
