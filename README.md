@@ -18,7 +18,6 @@
 - [Implementation Status](#implementation-status)
 - [Tech Stack](#tech-stack)
 - [How to Contribute](#how-to-contribute)
-- [License](#license)
 - [Credits](#credits)
 
 ---
