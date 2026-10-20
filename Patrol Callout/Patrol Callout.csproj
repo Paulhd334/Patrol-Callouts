@@ -8,6 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="BrokenDownVehicle.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="RagePluginHook" Version="1.124.0" />
 	</ItemGroup>
 

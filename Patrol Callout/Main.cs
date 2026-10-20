@@ -1,6 +1,7 @@
 ﻿using LSPD_First_Response.Mod.API;
 using Rage;
 using Rage.Native;
+using SuperPoursuiteCallout;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,7 +72,7 @@ namespace PatrolsCallouts
             // Pour l'instant : un seul callout. Les autres seront ajoutes ici au fur et a mesure.
             var callouts = new List<Type>
             {
-                typeof(VehiculeEnPanne)
+                typeof(BrokenDownVehicle)
             };
 
             int ok = 0;
