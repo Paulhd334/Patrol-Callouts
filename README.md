@@ -112,7 +112,7 @@ This README is the **roadmap**: every callout listed here is planned. Some are a
 |---|---------|--------|
 | 1 | Broken Down Vehicle on Highway | In progress (`BrokenDownVehicle.cs`) |
 | 2 | Suspect Truck on Highway | Backlog |
-| 3 | Abandoned Vehicle in Countryside |
+| 3 | Abandoned Vehicle in Countryside | Backlog |
 | 4 | Suspicious Gas Station | Backlog |
 | 6 | Barricaded Suspect | Backlog |
 | 7 | Organized Vehicle Theft | Backlog |
