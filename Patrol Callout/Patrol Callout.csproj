@@ -2,14 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<RootNamespace>SuperPoursuiteCallout</RootNamespace>
-		<AssemblyName>SuperPoursuiteCallout</AssemblyName>
+		<RootNamespace>PatrolsCallouts</RootNamespace>
+		<AssemblyName>PatrolsCallouts</AssemblyName>
 		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Include="BrokenDownVehicle.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="RagePluginHook" Version="1.124.0" />
@@ -23,6 +19,7 @@
 		<Reference Include="RagePluginHook">
 			<HintPath>..\..\..\..\Program Files\Epic Games\GTAV\RAGEPluginHook.exe</HintPath>
 		</Reference>
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
 </Project>

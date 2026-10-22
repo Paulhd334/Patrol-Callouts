@@ -52,7 +52,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\Patrol Callout.csproj",
-      "projectName": "SuperPoursuiteCallout",
+      "projectName": "PatrolsCallouts",
       "projectPath": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\Patrol Callout.csproj",
       "packagesPath": "C:\\Users\\vanca\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\vanca\\Desktop\\Patrol Callout\\obj\\",

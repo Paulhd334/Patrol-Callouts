@@ -145,6 +145,7 @@ namespace PatrolsCallouts
             }
             catch (Exception ex)
             {
+
                 Log("EXCEPTION dans NotifierChargement(): " + ex);
             }
         }

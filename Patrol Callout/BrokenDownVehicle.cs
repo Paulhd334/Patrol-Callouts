@@ -5,73 +5,124 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace SuperPoursuiteCallout
 {
-    // Vehicule en panne sur le bas-cote de l'autoroute.
-    // Le vehicule est deja a l'arret (pas de poursuite a l'acceptation).
-    // Le conducteur est dehors, capot ouvert, et fait des signes.
-    // Si le joueur s'approche trop pres / reste trop longtemps, le suspect
-    // panique et prend la fuite -> la poursuite est creee A CE MOMENT-LA.
+    // ============================================================
+    // CALLOUT : Véhicule en panne sur le bas-côté de l'autoroute.
+    //
+    // - Le véhicule est déjà à l'arrêt (pas de poursuite à l'acceptation).
+    // - Le conducteur est dehors, capot ouvert, et fait des signes.
+    // - Le véhicule fume quand le joueur s'approche.
+    // - Si le joueur s'approche trop près / reste trop longtemps,
+    //   le suspect panique et prend la fuite -> poursuite créée À CE MOMENT.
+    // - Si le joueur est assez proche, une jolie UI apparaît.
+    //   Appuyer sur E affiche le rappel : ouvrir Ultimate Backup
+    //   et appeler un Tow Truck.
+    // ============================================================
     [CalloutInfo("VehiculeEnPanne", CalloutProbability.Medium)]
     public class BrokenDownVehicle : Callout
     {
-        // Vehicules "civils" plausibles en panne. On prend un des deux au hasard
-        // pour varier d'une apparition a l'autre.
-        private static readonly string[] ModelesVehicule =
-        {
-            "blista",
-            "asea"
-        };
-
-        // Ped civil standard (pas de mp_freemode : tenue deja generee par le jeu).
+        // ------------------------------------------------------------
+        // Modèles
+        // ------------------------------------------------------------
+        private static readonly string[] ModelesVehicule = { "blista", "asea" };
         private const string ModeleConducteur = "a_m_y_business_01";
         private const string ModelePassager = "a_f_y_business_01";
 
-        // Distance (m) sous laquelle le joueur est considere "arrive sur place".
+        // ------------------------------------------------------------
+        // Constantes de gameplay
+        // ------------------------------------------------------------
         private const float DistanceApproche = 15f;
-
-        // Distance (m) a partir de laquelle on force le warp du vehicule sur le
-        // bas-cote (evite qu'il spawn au milieu de la voie, cf. plus bas).
-        private const float DecalageBasCote = 6f;
-
-        // Delai (ms) apres acceptation avant de commencer a verifier la proximite.
-        // Laisse le temps au blip/scanner de jouer et evite un declenchement au
-        // premier tick si le spawn est proche du joueur.
+        private const float DistanceUi = 4.0f;
         private const uint DelaiGraceApprocheMs = 3000;
-
-        // Apres ce delai (ms) sans que le joueur approche, on autorise la fuite
-        // automatique (le suspect en a marre d'attendre). 0 = jamais.
         private const uint DelaiPatienceSuspectMs = 90000;
+        private const float DecalageBasCote = 4.0f;
 
+        // ------------------------------------------------------------
+        // Champs d'état
+        // ------------------------------------------------------------
         private Vector3 spawnPos;
+        private float spawnHeading;
+
         private Vehicle vehicule;
         private Ped conducteur;
         private Ped passager;
         private Blip blip;
 
         private LHandle pursuit;
-        private bool poursuiteScolarisee = false;
         private bool suspectEnFuite = false;
         private bool joueurSurPlace = false;
         private uint tempsAcceptationMs;
 
+        // UI
+        private bool uiAffichee = false;
+        private bool panneauAffiche = false;
+        private bool toucheEPressee = false;
+        private int fumeeHandle = -1;
+
+        private static readonly Random Rng = new Random();
+
         public BrokenDownVehicle()
         {
-            Main.Log("Constructeur VehiculeEnPanne appele");
+            Main.Log("Constructeur VehiculeEnPanne appelé");
         }
 
+        // ============================================================
+        // 1) AVANT AFFICHAGE DU CALLOUT
+        // ============================================================
         public override bool OnBeforeCalloutDisplayed()
         {
             try
             {
-                // On cherche une position SUR autoroute (highway) si possible.
-                // World.GetNextPositionOnStreet ne distingue pas autoroute/route
-                // classique : on demande une position sur route, puis on tente
-                // d'affiner. Si rien de mieux n'est trouve, on garde la position
-                // generique (le callout reste jouable sur route normale).
-                spawnPos = World.GetNextPositionOnStreet(
+                Vector3 basePos = World.GetNextPositionOnStreet(
                     Game.LocalPlayer.Character.Position.Around(180f));
+
+                Vector3 nodePos;
+                float roadHeading;
+                bool ok = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(
+                    basePos.X, basePos.Y, basePos.Z,
+                    out nodePos, out roadHeading,
+                    1, 3.0f, 0);
+
+                if (!ok || nodePos == Vector3.Zero)
+                {
+                    nodePos = basePos;
+                    roadHeading = 0f;
+                }
+
+                float rad = roadHeading * (float)(Math.PI / 180.0);
+                float rightX = (float)Math.Cos(rad);
+                float rightY = -(float)Math.Sin(rad);
+
+                Vector3 shoulderPos = new Vector3(
+                    nodePos.X + rightX * DecalageBasCote,
+                    nodePos.Y + rightY * DecalageBasCote,
+                    nodePos.Z);
+
+                bool surRoute = NativeFunction.Natives.IS_POINT_ON_ROAD<bool>(
+                    shoulderPos.X, shoulderPos.Y, shoulderPos.Z, 0);
+
+                if (surRoute)
+                {
+                    spawnPos = shoulderPos;
+                }
+                else
+                {
+                    float small = DecalageBasCote * 0.5f;
+                    Vector3 alt = new Vector3(
+                        nodePos.X + rightX * small,
+                        nodePos.Y + rightY * small,
+                        nodePos.Z);
+
+                    if (NativeFunction.Natives.IS_POINT_ON_ROAD<bool>(alt.X, alt.Y, alt.Z, 0))
+                        spawnPos = alt;
+                    else
+                        spawnPos = nodePos;
+                }
+
+                spawnHeading = roadHeading;
 
                 CalloutPosition = spawnPos;
                 CalloutMessage = "Broken down vehicle on highway shoulder";
@@ -82,73 +133,66 @@ namespace SuperPoursuiteCallout
             }
             catch (Exception ex)
             {
-                Main.Log("EXCEPTION dans OnBeforeCalloutDisplayed (VehiculeEnPanne): " + ex);
+                Main.Log("EXCEPTION dans OnBeforeCalloutDisplayed (VehiculeEnPanne) : " + ex);
                 return false;
             }
 
             return base.OnBeforeCalloutDisplayed();
         }
 
+        // ============================================================
+        // 2) ACCEPTATION DU CALLOUT
+        // ============================================================
         public override bool OnCalloutAccepted()
         {
             try
             {
-                // 1) Creation du vehicule a l'arret, sur le cote.
-                string modeleChoisi = ModelesVehicule[
-                    new Random(Game.GameTime.GetHashCode()).Next(ModelesVehicule.Length)];
+                string modeleChoisi = ModelesVehicule[Rng.Next(ModelesVehicule.Length)];
 
-                vehicule = new Vehicle(modeleChoisi, spawnPos, 0f);
+                // ----- Véhicule en panne -----
+                vehicule = new Vehicle(modeleChoisi, spawnPos, spawnHeading);
                 if (!vehicule.Exists()) return false;
                 vehicule.MakePersistent();
 
-                // Decalage lateral : on pousse le vehicule sur le bas-cote pour
-                // eviter qu'il bloque la voie de circulation (le joueur doit
-                // pouvoir se garer a cote).
-                DecalerSurBasCote(vehicule);
-
-                // Etat "en panne" : capot ouvert, phares de detresse, moteur coupe.
-                NativeFunction.Natives.SET_VEHICLE_DOORS_LOCKED(vehicule, 1); // 1 = unlocked
+                NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(vehicule);
+                NativeFunction.Natives.SET_VEHICLE_DOORS_LOCKED(vehicule, 0);
                 NativeFunction.Natives.SET_VEHICLE_ENGINE_HEALTH(vehicule, 0f);
                 NativeFunction.Natives.SET_VEHICLE_UNDRIVEABLE(vehicule, true);
                 NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(vehicule, false);
                 vehicule.IsEngineOn = false;
 
-                // Phares de detresse (feux warning). La native attend un bool.
                 NativeFunction.Natives.SET_VEHICLE_HAZARDOUS_LIGHTS(vehicule, true);
+                NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(vehicule, 4, true, true);
 
-                // Capot ouvert (index 4 = capot sur la plupart des vehicules civils).
-                NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(vehicule, 4, false, true);
-
-                // 2) Conducteur dehors, sur le bas-cote, en train de faire signe.
-                conducteur = new Ped(ModeleConducteur, vehicule.Position.Around(2f), 0f);
+                // ----- Conducteur -----
+                conducteur = new Ped(ModeleConducteur, spawnPos.Around(2f), spawnHeading);
                 if (!conducteur.Exists()) return false;
                 conducteur.MakePersistent();
                 conducteur.BlockPermanentEvents = true;
-                conducteur.WarpIntoVehicle(vehicule, -1); // conducteur
-                // Il sort immediatement du vehicule.
+
+                conducteur.WarpIntoVehicle(vehicule, -1);
                 conducteur.Tasks.LeaveVehicle(LeaveVehicleFlags.None);
 
-                // 3) Passager eventuel, reste dans le vehicule.
-                //    (Uniquement si le modele a au moins 2 sieges.)
+                // ----- Passager -----
                 if (vehicule.PassengerCapacity >= 2)
                 {
-                    passager = new Ped(ModelePassager, vehicule.Position.Around(2f), 0f);
+                    passager = new Ped(ModelePassager, spawnPos.Around(2f), spawnHeading);
                     if (passager.Exists())
                     {
                         passager.MakePersistent();
                         passager.BlockPermanentEvents = true;
-                        passager.WarpIntoVehicle(vehicule, 0); // passager avant
+                        passager.WarpIntoVehicle(vehicule, 0);
                     }
                 }
 
-                // 4) Blip sur le vehicule.
+                // ----- Blip -----
                 blip = vehicule.AttachBlip();
                 blip.Color = Color.Yellow;
                 blip.IsFriendly = false;
                 blip.Name = "Disabled vehicle";
                 blip.IsRouteEnabled = true;
 
-                // 5) Audio scanner.
+                // ----- Audio scanner -----
                 Functions.PlayScannerAudioUsingPosition(
                     "CIVILIAN_VEHICLE_DISABLED ON_HIGHWAY", spawnPos);
 
@@ -156,7 +200,7 @@ namespace SuperPoursuiteCallout
             }
             catch (Exception ex)
             {
-                Main.Log("EXCEPTION dans OnCalloutAccepted (VehiculeEnPanne): " + ex);
+                Main.Log("EXCEPTION dans OnCalloutAccepted (VehiculeEnPanne) : " + ex);
                 return false;
             }
 
@@ -169,48 +213,52 @@ namespace SuperPoursuiteCallout
             NettoyerEntites();
         }
 
+        // ============================================================
+        // 3) BOUCLE PRINCIPALE
+        // ============================================================
         public override void Process()
         {
             base.Process();
 
-            // Pas encore initialise ou deja termine -> rien a faire.
             if (conducteur == null || !conducteur.Exists()) return;
 
             try
             {
                 uint ecouleMs = Game.GameTime - tempsAcceptationMs;
 
-                // Delai de grace : on ne teste rien avant.
                 if (ecouleMs < DelaiGraceApprocheMs) return;
 
-                // --- Cas A : poursuite deja declenchee -> on delegue a LSPDFR ---
+                // ----- Cas A : poursuite déjà déclenchée -----
                 if (suspectEnFuite)
                 {
                     if (pursuit != null && !Functions.IsPursuitStillRunning(pursuit))
                     {
-                        Main.Log("[INFO] Poursuite VehiculeEnPanne terminee.");
+                        Main.Log("[INFO] Poursuite VehiculeEnPanne terminée.");
                         End();
                     }
                     return;
                 }
 
-                // --- Cas B : le joueur s'est approche -> le suspect panique ---
+                // ----- UI + touche E -----
+                GererUiEtToucheE();
+
+                // ----- Cas B : le joueur s'approche -> le suspect panique -----
                 float distanceJoueur = Game.LocalPlayer.Character.DistanceTo(conducteur.Position);
                 if (!joueurSurPlace && distanceJoueur <= DistanceApproche)
                 {
                     joueurSurPlace = true;
-                    DeclencherFuite(raison: "joueur proche");
+                    DeclencherFuite("joueur proche");
                     return;
                 }
 
-                // --- Cas C : le suspect perd patience et part de lui-meme ---
+                // ----- Cas C : le suspect perd patience -----
                 if (!joueurSurPlace && DelaiPatienceSuspectMs > 0 && ecouleMs >= DelaiPatienceSuspectMs)
                 {
-                    DeclencherFuite(raison: "suspect impatient");
+                    DeclencherFuite("suspect impatient");
                     return;
                 }
 
-                // --- Cas D : le conducteur est mort -> on nettoie ---
+                // ----- Cas D : conducteur mort -----
                 if (conducteur.IsDead)
                 {
                     Main.Log("[INFO] Conducteur mort, fin du callout VehiculeEnPanne.");
@@ -220,36 +268,117 @@ namespace SuperPoursuiteCallout
             }
             catch (Exception ex)
             {
-                Main.Log("EXCEPTION dans Process (VehiculeEnPanne): " + ex);
+                Main.Log("EXCEPTION dans Process (VehiculeEnPanne) : " + ex);
             }
         }
 
-        // Declenche la fuite du suspect : il remonte dans le vehicule, demarre
-        // le moteur, et une poursuite est creee. A appeler une seule fois.
+        // ============================================================
+        // 4) UI + TOUCHE E
+        // ============================================================
+        private void GererUiEtToucheE()
+        {
+            if (vehicule == null || !vehicule.Exists()) return;
+
+            float distVehicule = Game.LocalPlayer.Character.DistanceTo(vehicule.Position);
+
+            // ----- Fumée quand le joueur est proche -----
+            if (distVehicule <= 12f && fumeeHandle == -1)
+            {
+                fumeeHandle = NativeFunction.Natives.START_PARTICLE_FX_LOOPED_ON_ENTITY<int>(
+                    "ent_amb_smoke_vehicle", vehicule,
+                    0f, 1.2f, 0f,
+                    0f, 0f, 0f,
+                    0.6f,
+                    false, false, false);
+            }
+            else if (distVehicule > 15f && fumeeHandle != -1)
+            {
+                NativeFunction.Natives.STOP_PARTICLE_FX_LOOPED(fumeeHandle, false);
+                fumeeHandle = -1;
+            }
+
+            // ----- Affichage du bouton "Appuyez sur E" si assez proche -----
+            bool assezProche = distVehicule <= DistanceUi;
+
+            if (assezProche && !uiAffichee)
+            {
+                uiAffichee = true;
+            }
+            else if (!assezProche && uiAffichee)
+            {
+                uiAffichee = false;
+                panneauAffiche = false;
+            }
+
+            // ----- Dessin du bouton E -----
+            if (uiAffichee)
+            {
+                // Joli panneau natif "Appuyez sur E"
+                NativeFunction.Natives.BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");
+                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(
+                    "Press ~INPUT_CONTEXT~ to call Ultimate Backup (Tow Truck)");
+                NativeFunction.Natives.END_TEXT_COMMAND_DISPLAY_HELP(
+                    0, false, true, -1);
+            }
+
+            // ----- Détection de la touche E -----
+            if (uiAffichee)
+            {
+                if (Game.IsKeyDown(Keys.E) && !toucheEPressee)
+                {
+                    toucheEPressee = true;
+                    panneauAffiche = true;
+                    AfficherPanneauUb();
+                }
+                else if (Game.GetKeyboardState().IsUp(Keys.E))
+                {
+                    toucheEPressee = false;
+                }
+            }
+        }
+
+        // ------------------------------------------------------------
+        // Joli panneau UI : invite à ouvrir Ultimate Backup + Tow Truck
+        // ------------------------------------------------------------
+        private void AfficherPanneauUb()
+        {
+            Game.DisplayNotification(
+                "~y~Ultimate Backup~w~ opened by your service. " +
+                "Please call a ~b~Tow Truck~w~ to remove the disabled vehicle.");
+        }
+
+        // ============================================================
+        // 5) FUITE
+        // ============================================================
         private void DeclencherFuite(string raison)
         {
             if (suspectEnFuite) return;
             suspectEnFuite = true;
 
+            // On cache l'UI et on coupe la fumée.
+            uiAffichee = false;
+            panneauAffiche = false;
+            if (fumeeHandle != -1)
+            {
+                NativeFunction.Natives.STOP_PARTICLE_FX_LOOPED(fumeeHandle, false);
+                fumeeHandle = -1;
+            }
+
             try
             {
-                Main.Log("[INFO] Fuite declenchee (" + raison + ").");
+                Main.Log("[INFO] Fuite déclenchée (" + raison + ").");
 
-                // Le conducteur remonte.
                 if (conducteur != null && conducteur.Exists() && !conducteur.IsDead)
                 {
-                    conducteur.BlockPermanentEvents = true;
                     NativeFunction.Natives.SET_VEHICLE_UNDRIVEABLE(vehicule, false);
                     NativeFunction.Natives.SET_VEHICLE_ENGINE_HEALTH(vehicule, 1000f);
                     NativeFunction.Natives.SET_VEHICLE_HAZARDOUS_LIGHTS(vehicule, false);
-                    NativeFunction.Natives.SET_VEHICLE_DOOR_CLOSE(vehicule, 4); // capot
+                    NativeFunction.Natives.SET_VEHICLE_DOOR_CLOSE(vehicule, 4);
                     vehicule.IsEngineOn = true;
+
                     conducteur.WarpIntoVehicle(vehicule, -1);
                 }
 
-                // Le passager reste passager (rien a faire).
-
-                // Poursuite cote LSPDFR.
                 pursuit = Functions.CreatePursuit();
                 if (conducteur != null && conducteur.Exists())
                     Functions.AddPedToPursuit(pursuit, conducteur);
@@ -259,7 +388,6 @@ namespace SuperPoursuiteCallout
                 Functions.SetPursuitCopsCanJoin(pursuit, false);
                 Functions.SetPursuitIsActiveForPlayer(pursuit, true);
 
-                // Le blip devient rouge (suspect en fuite) au lieu de jaune.
                 if (blip != null && blip.Exists())
                 {
                     blip.Color = Color.Red;
@@ -268,57 +396,38 @@ namespace SuperPoursuiteCallout
 
                 Functions.PlayScannerAudioUsingPosition(
                     "SUSPECT_IS_FLEEING IN_OR_ON_POSITION", vehicule.Position);
-
-                poursuiteScolarisee = true;
             }
             catch (Exception ex)
             {
-                Main.Log("EXCEPTION dans DeclencherFuite (VehiculeEnPanne): " + ex);
+                Main.Log("EXCEPTION dans DeclencherFuite (VehiculeEnPanne) : " + ex);
             }
         }
 
+        // ============================================================
+        // 6) FIN / NETTOYAGE
+        // ============================================================
         public override void End()
         {
             base.End();
-            if (blip != null && blip.Exists()) blip.Delete();
+            NettoyerEntites();
         }
 
         private void NettoyerEntites()
         {
+            if (fumeeHandle != -1)
+            {
+                NativeFunction.Natives.STOP_PARTICLE_FX_LOOPED(fumeeHandle, false);
+                fumeeHandle = -1;
+            }
+
+            uiAffichee = false;
+            panneauAffiche = false;
+            toucheEPressee = false;
+
             if (blip != null && blip.Exists()) blip.Delete();
             if (passager != null && passager.Exists()) passager.Delete();
             if (conducteur != null && conducteur.Exists()) conducteur.Delete();
             if (vehicule != null && vehicule.Exists()) vehicule.Delete();
-        }
-
-        // --------------------------------------------------------------
-        // Helpers
-        // --------------------------------------------------------------
-
-        // Pousse le vehicule lateralement par rapport a son axe pour le coller
-        // sur le bas-cote. On utilise le vecteur "droite" du vehicule (RightVector)
-        // et non RightVector sur un Vehicle inexistant : Rage expose bien
-        // Entity.RightVector (Vector3 perpendiculaire a Heading).
-        private void DecalerSurBasCote(Vehicle v)
-        {
-            if (v == null || !v.Exists()) return;
-            try
-            {
-                Vector3 droite = v.RightVector;
-                Vector3 nouvellePos = v.Position + droite * DecalageBasCote;
-
-                // On verifie que la position decalee est bien sur une route/berge
-                // praticable ; sinon on garde la position d'origine (mieux vaut
-                // un vehicule au milieu qu'un vehicule dans un mur).
-                if (World.GetNextPositionOnStreet(nouvellePos).DistanceTo(nouvellePos) < 5f)
-                {
-                    v.Position = nouvellePos;
-                }
-            }
-            catch (Exception ex)
-            {
-                Main.Log("EXCEPTION dans DecalerSurBasCote (VehiculeEnPanne): " + ex);
-            }
         }
     }
 }

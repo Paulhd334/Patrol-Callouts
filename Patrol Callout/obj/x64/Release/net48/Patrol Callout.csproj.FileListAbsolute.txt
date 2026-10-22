@@ -1,5 +1,3 @@
-C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\SuperPoursuiteCallout.dll
-C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\SuperPoursuiteCallout.pdb
 C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\RagePluginHook.dll
 C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\LSPD First Response.dll
 C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\LSPD First Response.pdb
@@ -9,5 +7,7 @@ C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\Patrol Callout.Assem
 C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\Patrol Callout.AssemblyInfo.cs
 C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\Patrol Callout.csproj.CoreCompileInputs.cache
 C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\Patrol C.5BF49082.Up2Date
-C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\SuperPoursuiteCallout.dll
-C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\SuperPoursuiteCallout.pdb
+C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\PatrolsCallouts.dll
+C:\Users\vanca\Desktop\Patrol Callout\bin\x64\Release\net48\PatrolsCallouts.pdb
+C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\PatrolsCallouts.dll
+C:\Users\vanca\Desktop\Patrol Callout\obj\x64\Release\net48\PatrolsCallouts.pdb

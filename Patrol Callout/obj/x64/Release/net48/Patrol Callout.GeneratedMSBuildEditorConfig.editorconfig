@@ -1,5 +1,5 @@
 is_global = true
-build_property.RootNamespace = SuperPoursuiteCallout
+build_property.RootNamespace = PatrolsCallouts
 build_property.ProjectDir = C:\Users\vanca\Desktop\Patrol Callout\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
