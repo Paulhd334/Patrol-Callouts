@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Éléments de solution/">
+    <File Path="SuspectTruckHighway.cs" />
+  </Folder>
+  <Project Path="Patrol Callout.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>
