@@ -31,10 +31,10 @@
 
 ### Traffic & Roadside
 
-**1. Broken Down Vehicle on the Highway** *(in progress — `BrokenDownVehicle.cs`)*  
+**1. Broken Down Vehicle on the Highway** *(implemented — `BrokenDownVehicle.cs`)*  
 > A driver is stranded on the emergency lane. Officers must secure the area, interview the driver, and call a tow truck if needed. The driver may be cooperative, panicked, or hiding something.
 
-**2. Suspect Truck on the Highway**  
+**2. Suspect Truck on the Highway** *(implemented — `SuspectTruckHighway.cs`)*  
 > A truck is reported with a potentially stolen cargo. Officers must check the driver's documents and verify the origin of the load. The driver may cooperate, provide fake papers, or attempt to flee.
 
 **3. Abandoned Vehicle in the Countryside**  
@@ -48,7 +48,7 @@
 
 ### Investigations
 
-**5. Hit-and-Run Accident**  
+**5. Hit-and-Run Accident** *(implemented — `HitAndRunAccident.cs`)*  
 > Two vehicles are involved in an accident, but one driver has fled. Officers must interview witnesses, collect information, and search for the fleeing vehicle.
 
 **6. Witness Who Disappears**  
@@ -95,13 +95,13 @@
 
 | # | Callout | Status |
 |---|---------|--------|
-| 1 | Broken Down Vehicle on Highway | In progress (`BrokenDownVehicle.cs`) |
-| 2 | Suspect Truck on Highway | Backlog |
+| 1 | Broken Down Vehicle on Highway | Implemented (`BrokenDownVehicle.cs`) |
+| 2 | Suspect Truck on Highway | Implemented (`SuspectTruckHighway.cs`) |
 | 3 | Abandoned Vehicle in Countryside | Backlog |
 | 4 | Suspicious Gas Station | Backlog |
 | 6 | Barricaded Suspect | Backlog |
 | 7 | Organized Vehicle Theft | Backlog |
-| 8 | Hit-and-Run Accident | Backlog |
+| 8 | Hit-and-Run Accident | Implemented (`HitAndRunAccident.cs`) |
 | 9 | Witness Who Disappears | Backlog |
 | 10 | Suspicious Object Found | Backlog |
 | 11 | Disturbing Disappearance | Backlog |
@@ -146,4 +146,3 @@
 
 ---
 ---
-
