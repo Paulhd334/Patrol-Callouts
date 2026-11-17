@@ -97,19 +97,19 @@
 |---|---------|--------|
 | 1 | Broken Down Vehicle on Highway | Implemented (`BrokenDownVehicle.cs`) |
 | 2 | Suspect Truck on Highway | Implemented (`SuspectTruckHighway.cs`) |
-| 3 | Abandoned Vehicle in Countryside | Backlog |
-| 4 | Suspicious Gas Station | Backlog |
-| 6 | Barricaded Suspect | Backlog |
-| 7 | Organized Vehicle Theft | Backlog |
-| 8 | Hit-and-Run Accident | Implemented (`HitAndRunAccident.cs`) |
-| 9 | Witness Who Disappears | Backlog |
-| 10 | Suspicious Object Found | Backlog |
-| 11 | Disturbing Disappearance | Backlog |
-| 12 | The Mysterious Case | Backlog (multi-part arc) |
-| 13 | Person in Distress | Backlog |
-| 14 | Bus Incident — Feet on Seats | Backlog |
-| 15 | Accident Involving Police Vehicle | Backlog |
-| 16 | Suspicious Abandoned Vehicle | Backlog |
+| 3 | Abandoned Vehicle in Countryside | Implemented (`AbandonedVehicleCountryside.cs`) |
+| 4 | Suspicious Gas Station | Implemented (`SuspiciousGasStation.cs`) |
+| 5 | Hit-and-Run Accident | Implemented (`HitAndRunAccident.cs`) |
+| 6 | Barricaded Suspect | Implemented (`BarricadedSuspect.cs`) |
+| 7 | Organized Vehicle Theft | Implemented (`OrganizedVehicleTheft.cs`) |
+| 8 | Witness Who Disappears | Implemented (`WitnessWhoDisappears.cs`) |
+| 9 | Suspicious Object Found | Implemented (`SuspiciousObjectFound.cs`) |
+| 10 | Disturbing Disappearance | Implemented (`DisturbingDisappearance.cs`) |
+| 11 | The Mysterious Case | Implemented (`MysteriousCase.cs`) |
+| 12 | Person in Distress | Implemented (`PersonInDistress.cs`) |
+| 13 | Bus Incident — Feet on Seats | Implemented (`BusIncidentFeetOnSeats.cs`) |
+| 14 | Accident Involving Police Vehicle | Implemented (`PoliceVehicleAccident.cs`) |
+| 15 | Suspicious Abandoned Vehicle | Implemented (`SuspiciousAbandonedVehicle.cs`) |
 
 
 **Legend:** In progress · Planned · Backlog

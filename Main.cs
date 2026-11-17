@@ -75,7 +75,19 @@ namespace PatrolsCallouts
 {
     typeof(BrokenDownVehicle),
     typeof(SuspectTruckHighway),
-    typeof(HitAndRunAccident)
+    typeof(HitAndRunAccident),
+    typeof(AbandonedVehicleCountryside),
+    typeof(SuspiciousGasStation),
+    typeof(BarricadedSuspect),
+    typeof(OrganizedVehicleTheft),
+    typeof(WitnessWhoDisappears),
+    typeof(SuspiciousObjectFound),
+    typeof(DisturbingDisappearance),
+    typeof(MysteriousCase),
+    typeof(PersonInDistress),
+    typeof(BusIncidentFeetOnSeats),
+    typeof(PoliceVehicleAccident),
+    typeof(SuspiciousAbandonedVehicle)
 };
 
             int ok = 0;
