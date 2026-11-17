@@ -176,7 +176,9 @@ namespace SuperPoursuiteCallout
                 NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(vehicule, false);
                 vehicule.IsEngineOn = false;
 
-                NativeFunction.Natives.SET_VEHICLE_HAZARDOUS_LIGHTS(vehicule, true);
+                // SET_VEHICLE_HAZARDOUS_LIGHTS is not a GTA V native. Calling it
+                // made LSPDFR reject this callout as soon as it was accepted.
+                CalloutUtils.SetHazards(vehicule, true);
                 NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(vehicule, 4, true, true);
 
                 // ----- Conducteur -----
@@ -332,7 +334,7 @@ namespace SuperPoursuiteCallout
             if (passager != null && passager.Exists()) passager.IsPositionFrozen = false;
 
             NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY(vehicule);
-            NativeFunction.Natives.SET_VEHICLE_HAZARDOUS_LIGHTS(vehicule, true);
+            CalloutUtils.SetHazards(vehicule, true);
             NativeFunction.Natives.SET_VEHICLE_DOOR_OPEN(vehicule, 4, true, true);
 
             CalloutUtils.StartScenario(conducteur, "WORLD_HUMAN_STAND_IMPATIENT");
@@ -429,8 +431,8 @@ namespace SuperPoursuiteCallout
                 // Le véhicule "repart" comme par magie : réparation + moteur
                 NativeFunction.Natives.SET_VEHICLE_UNDRIVEABLE(vehicule, false);
                 NativeFunction.Natives.SET_VEHICLE_ENGINE_HEALTH(vehicule, 1000f);
-                NativeFunction.Natives.SET_VEHICLE_HAZARDOUS_LIGHTS(vehicule, false);
-                NativeFunction.Natives.SET_VEHICLE_DOOR_CLOSE(vehicule, 4);
+                CalloutUtils.SetHazards(vehicule, false);
+                NativeFunction.CallByName<uint>("SET_VEHICLE_DOOR_SHUT", vehicule, 4, false);
                 vehicule.IsEngineOn = true;
 
                 // FIX : le conducteur COURT jusqu'à son véhicule (avant : téléportation instantanée).
@@ -474,6 +476,7 @@ namespace SuperPoursuiteCallout
 
             Functions.SetPursuitCopsCanJoin(pursuit, false);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
+            Main.RequestSinglePursuitBackup(vehicule.Position);
 
             Functions.PlayScannerAudioUsingPosition(
                 "SUSPECT_IS_FLEEING IN_OR_ON_POSITION", vehicule.Position);

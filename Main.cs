@@ -165,6 +165,24 @@ namespace PatrolsCallouts
             }
         }
 
+        // One LSPDFR backup request corresponds to one responding patrol unit.
+        // Keeping this in one place prevents a callout from accidentally
+        // requesting several vehicles every Process tick.
+        internal static void RequestSinglePursuitBackup(Vector3 position)
+        {
+            try
+            {
+                Functions.RequestBackup(position,
+                    LSPD_First_Response.EBackupResponseType.Code3,
+                    LSPD_First_Response.EBackupUnitType.LocalUnit);
+                Log("One pursuit backup unit requested.");
+            }
+            catch (Exception ex)
+            {
+                Log("EXCEPTION while requesting pursuit backup: " + ex);
+            }
+        }
+
         internal static void Log(string message)
         {
             try

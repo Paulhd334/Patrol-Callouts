@@ -56,7 +56,7 @@ namespace PatrolsCallouts.Callouts
         private static readonly string[] Cargos = { "auto parts", "food supplies", "construction equipment", "furniture", "beverages" };
         private static readonly string[] StolenCargos = { "flat screen TVs", "power tools", "brand new phones", "engine parts", "cases of liquor" };
         private static readonly string[] Companies = { "Gruppe Sechs Logistics", "Ponsonbys Transport", "Los Santos Freight", "Blaine Haulage", "Vinewood Express" };
-        private static readonly string[] HighwayKeywords = { "Fwy", "Hwy", "Freeway", "Highway", "Route 68" };
+        private static readonly string[] HighwayKeywords = { "Fwy", "Hwy", "Freeway", "Highway", "Route 68", "Interstate", "Senora", "Great Ocean" };
 
         private string declaredCargo, realCargo, company;
 
@@ -105,6 +105,8 @@ namespace PatrolsCallouts.Callouts
         // =====================================================================
         public override bool OnCalloutAccepted()
         {
+            try
+            {
             int roll = rnd.Next(100);
             scenario = roll < 35 ? Scenario.Cooperative : (roll < 70 ? Scenario.FakePapers : Scenario.Flee);
 
@@ -148,8 +150,14 @@ namespace PatrolsCallouts.Callouts
 
             running = true;
             logicFiber = GameFiber.StartNew(LogicLoop, "SuspectTruckHighway logic");
-
             return base.OnCalloutAccepted();
+            }
+            catch (Exception ex)
+            {
+                Main.Log("EXCEPTION in OnCalloutAccepted (SuspectTruckHighway): " + ex);
+                End();
+                return false;
+            }
         }
 
         public override void OnCalloutNotAccepted()
@@ -213,7 +221,7 @@ namespace PatrolsCallouts.Callouts
                 driver.WarpIntoVehicle(truck, -1);
                 Functions.SetPedCantBeArrestedByPlayer(driver, false);
 
-                if (areaBlip) areaBlip.Delete();
+                RemoveAreaBlip();
                 truckBlip = truck.AttachBlip();
                 truckBlip.Color = Color.Yellow;
                 truckBlip.IsRouteEnabled = true;
@@ -241,6 +249,19 @@ namespace PatrolsCallouts.Callouts
             if (trailer) trailer.IsPositionFrozen = false;
             driver.Tasks.CruiseWithVehicle(truck, 17f, VehicleDrivingFlags.Normal);
             released = true;
+        }
+
+        private void RemoveAreaBlip()
+        {
+            try
+            {
+                if (areaBlip != null && areaBlip.Exists()) areaBlip.Delete();
+            }
+            catch (Exception ex)
+            {
+                Main.Log("Could not remove truck search area: " + ex.Message);
+            }
+            finally { areaBlip = null; }
         }
 
         // =====================================================================
@@ -480,16 +501,14 @@ namespace PatrolsCallouts.Callouts
             stage = Stage.Pursuit;
             menu.Close();
             if (truckBlip) truckBlip.Delete();
-            if (areaBlip) areaBlip.Delete();
+            RemoveAreaBlip();
             NativeFunction.CallByName<uint>("SET_VEHICLE_HANDBRAKE", truck, false);
             CalloutUtils.SetHazards(truck, false);
 
             pursuit = Functions.CreatePursuit();
             Functions.AddPedToPursuit(pursuit, driver);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-            Functions.RequestBackup(Game.LocalPlayer.Character.Position,
-                LSPD_First_Response.EBackupResponseType.Pursuit,
-                LSPD_First_Response.EBackupUnitType.LocalUnit);
+            Main.RequestSinglePursuitBackup(Game.LocalPlayer.Character.Position);
 
             Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept",
                 "Dispatch", "~r~The driver is fleeing!", "Pursuit in progress, backup is on the way.");
@@ -523,7 +542,7 @@ namespace PatrolsCallouts.Callouts
                 ended = true;
                 if (menu != null) menu.Dispose();
 
-                if (areaBlip) areaBlip.Delete();
+                RemoveAreaBlip();
                 if (truckBlip) truckBlip.Delete();
                 if (truck) truck.IsPositionFrozen = false;
                 if (trailer) trailer.IsPositionFrozen = false;

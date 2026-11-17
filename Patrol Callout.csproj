@@ -5,6 +5,7 @@
 		<RootNamespace>PatrolsCallouts</RootNamespace>
 		<AssemblyName>PatrolsCallouts</AssemblyName>
 		<Platforms>AnyCPU;x64</Platforms>
+		<GtaVDirectory Condition="'$(GtaVDirectory)' == ''">C:\Program Files\Epic Games\GTAV</GtaVDirectory>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,13 +14,23 @@
 
 	<ItemGroup>
 		<Reference Include="LSPD First Response">
-			<HintPath>..\..\..\..\Program Files\Epic Games\GTAV\plugins\LSPD First Response.dll</HintPath>
+			<HintPath>$(GtaVDirectory)\plugins\LSPD First Response.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="Microsoft.CSharp" />
 		<Reference Include="RagePluginHook">
-			<HintPath>..\..\..\..\Program Files\Epic Games\GTAV\RAGEPluginHook.exe</HintPath>
+			<HintPath>$(GtaVDirectory)\RAGEPluginHook.exe</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
+	<!-- The repository retains an old nested project for reference. Do not let
+	     the SDK's default glob compile its duplicate source and obj files. -->
+	<ItemGroup>
+		<Compile Remove="Patrol Callout\**\*.cs" />
+		<EmbeddedResource Remove="Patrol Callout\**\*" />
+		<None Remove="Patrol Callout\**\*" />
 	</ItemGroup>
 
 </Project>

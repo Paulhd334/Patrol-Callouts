@@ -94,7 +94,6 @@ namespace PatrolsCallouts.Callouts
         private Blip areaBlip, searchBlip, suspectBlip;
         private LHandle pursuit;
 
-        private GameFiber logicFiber;
         private CalloutMenu menu;
         private volatile bool running;
         private bool ended;
@@ -136,6 +135,8 @@ namespace PatrolsCallouts.Callouts
         // =====================================================================
         public override bool OnCalloutAccepted()
         {
+            try
+            {
             int roll = rnd.Next(100);
             behavior = roll < 40 ? Behavior.Surrender : (roll < 75 ? Behavior.FleeInVehicle : Behavior.AbandonedVehicle);
 
@@ -155,6 +156,7 @@ namespace PatrolsCallouts.Callouts
             Vector3 d = ahead - accidentPoint;
             d.Z = 0f;
             if (d.Length() < 10f) d = dir;
+            if (d.Length() < 0.1f) return false;
             d = d / d.Length();
             roadDir = d;
             roadHeading = MathHelper.ConvertDirectionToHeading(d);
@@ -181,9 +183,14 @@ namespace PatrolsCallouts.Callouts
             menu = new CalloutMenu();
 
             running = true;
-            logicFiber = GameFiber.StartNew(LogicLoop, "HitAndRunAccident logic");
-
             return base.OnCalloutAccepted();
+            }
+            catch (Exception ex)
+            {
+                Main.Log("EXCEPTION in OnCalloutAccepted (HitAndRunAccident): " + ex);
+                End();
+                return false;
+            }
         }
 
         public override void OnCalloutNotAccepted()
@@ -204,24 +211,25 @@ namespace PatrolsCallouts.Callouts
         // =====================================================================
         //  3) Main loop
         // =====================================================================
-        private void LogicLoop()
+        // LSPDFR already calls Process on its game fiber. Keeping all state
+        // changes here avoids a detached fiber silently stopping the callout.
+        private void ProcessScenario()
         {
             try
             {
-                while (running)
+                if (running)
                 {
-                    GameFiber.Yield();
                     Ped player = Game.LocalPlayer.Character;
 
                     // ---------- Phase 0 : on the way to the scene ----------
                     if (stage == Stage.Responding)
                     {
-                        if (player.DistanceTo(accidentPoint) < 250f)
+                        if (player.DistanceTo(accidentPoint) < 300f)
                         {
                             if (SpawnScene()) stage = Stage.OnScene;
                             else { CleanFinish("~r~Could not set up the accident scene. Callout cancelled."); return; }
                         }
-                        continue;
+                        return;
                     }
 
                     // ---------- Pursuit (handled by LSPDFR) ----------
@@ -232,7 +240,7 @@ namespace PatrolsCallouts.Callouts
                             CleanFinish("Pursuit over. The suspect will be processed if apprehended.");
                             return;
                         }
-                        continue;
+                        return;
                     }
 
                     // ---------- Phase 1 : investigating the scene ----------
@@ -258,7 +266,7 @@ namespace PatrolsCallouts.Callouts
                                 if (sel >= 0) ExecuteSceneItem(sel);
                             }
                         }
-                        continue;
+                        return;
                     }
 
                     // ---------- Phase 2 : searching for the suspect ----------
@@ -271,15 +279,15 @@ namespace PatrolsCallouts.Callouts
                                 if (SpawnSuspect()) suspectSpawned = true;
                                 else { CleanFinish("~r~Could not locate the suspect vehicle. Callout cancelled."); return; }
                             }
-                            continue;
+                            return;
                         }
 
                         if (!suspectCar || !suspectPed) { CleanFinish("~r~The suspect vehicle is gone."); return; }
                         if (suspectPed.IsDead) { CleanFinish("The suspect is down. Backup will secure the scene."); return; }
-                        if (!suspectReleased) { TryReleaseSuspect(player); continue; }
+                        if (!suspectReleased) { TryReleaseSuspect(player); return; }
 
                         HandleSearch(player);
-                        continue;
+                        return;
                     }
 
                     // ---------- Phase 3 : suspect stopped ----------
@@ -313,7 +321,8 @@ namespace PatrolsCallouts.Callouts
             }
             catch (Exception ex)
             {
-                Game.LogTrivial("[HitAndRunAccident] LogicLoop error: " + ex);
+                Main.Log("EXCEPTION in HitAndRunAccident.ProcessScenario: " + ex);
+                Game.LogTrivial("[HitAndRunAccident] ProcessScenario error: " + ex);
                 if (!ended) CleanFinish("~r~Callout ended because of an error.");
             }
         }
@@ -350,7 +359,7 @@ namespace PatrolsCallouts.Callouts
                     p.Heading = MathHelper.ConvertDirectionToHeading(victimCar.Position - p.Position);
                 }
 
-                if (areaBlip) areaBlip.Delete();
+                RemoveAreaBlip();
 
                 menu.SetItems("ACCIDENT SCENE", "Hit-and-run",
                     "Interview the victim",
@@ -367,6 +376,7 @@ namespace PatrolsCallouts.Callouts
             }
             catch (Exception ex)
             {
+                Main.Log("EXCEPTION in SpawnScene: " + ex);
                 Game.LogTrivial("[HitAndRunAccident] SpawnScene error: " + ex);
                 return false;
             }
@@ -386,6 +396,19 @@ namespace PatrolsCallouts.Callouts
             CalloutUtils.StartScenario(witness1, "WORLD_HUMAN_STAND_MOBILE");
             CalloutUtils.StartScenario(witness2, "WORLD_HUMAN_STAND_IMPATIENT");
             sceneReleased = true;
+        }
+
+        private void RemoveAreaBlip()
+        {
+            try
+            {
+                if (areaBlip != null && areaBlip.Exists()) areaBlip.Delete();
+            }
+            catch (Exception ex)
+            {
+                Main.Log("Could not remove accident search area: " + ex.Message);
+            }
+            finally { areaBlip = null; }
         }
 
         private static bool IsNear(Entity e, float distance)
@@ -732,9 +755,7 @@ namespace PatrolsCallouts.Callouts
             pursuit = Functions.CreatePursuit();
             Functions.AddPedToPursuit(pursuit, suspectPed);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-            Functions.RequestBackup(Game.LocalPlayer.Character.Position,
-                LSPD_First_Response.EBackupResponseType.Pursuit,
-                LSPD_First_Response.EBackupUnitType.LocalUnit);
+            Main.RequestSinglePursuitBackup(Game.LocalPlayer.Character.Position);
 
             Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept",
                 "Dispatch", "~r~The suspect is fleeing!", "Pursuit in progress, backup is on the way.");
@@ -758,6 +779,7 @@ namespace PatrolsCallouts.Callouts
         public override void Process()
         {
             base.Process();
+            if (running && !ended) ProcessScenario();
         }
 
         public override void End()
@@ -768,7 +790,7 @@ namespace PatrolsCallouts.Callouts
                 ended = true;
                 if (menu != null) menu.Dispose();
 
-                if (areaBlip) areaBlip.Delete();
+                RemoveAreaBlip();
                 if (searchBlip) searchBlip.Delete();
                 if (suspectBlip) suspectBlip.Delete();
 
