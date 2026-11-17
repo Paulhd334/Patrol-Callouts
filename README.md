@@ -1,148 +1,115 @@
 # Patrols Callouts
 
-> **Patrols Callouts** is an LSPDFR plugin for GTA V combining a **police menu** with a growing collection of **realistic callouts** — traffic stops, roadside assistance, investigations, and multi-part scenarios.
+![Version](https://img.shields.io/badge/version-1.1.1-blue)
+![Platform](https://img.shields.io/badge/platform-GTA_V_PC-lightgrey)
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)
-![LSPDFR](https://img.shields.io/badge/LSPDFR-0.4.x-1f6feb?style=flat-square)
-![RAGE Plugin Hook](https://img.shields.io/badge/RAGE%20Plugin%20Hook-latest-orange?style=flat-square)
-![Platform](https://img.shields.io/badge/platform-GTA%20V%20(PC)-lightgrey?style=flat-square)
-![Status](https://img.shields.io/badge/status-work%20in%20progress-yellow?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+An LSPDFR / RAGE Plugin Hook plugin by **UNWARE STUDIO**.
+Version 1.1.1 keeps nine callouts and reworks the six recent scenarios following player testing.
+All new prompts and dialogue use US English.
 
----
+## Install
 
-## Table of Contents
+1. Close GTA V and RAGE Plugin Hook.
+2. Copy `PatrolsCallouts.dll` to `GTA V/plugins/LSPDFR/`, replacing the previous copy.
+3. Start GTA through RAGE Plugin Hook and go on duty in LSPDFR.
+4. Run one command below in the RPH console. Accept the dispatch if prompted.
+5. Finish or cancel that callout before starting another.
 
-[![Overview](https://img.shields.io/badge/Overview-grey?style=for-the-badge)](#overview)
-[![Planned Callouts](https://img.shields.io/badge/Planned_Callouts-grey?style=for-the-badge)](#planned-callouts)
-[![Implementation Status](https://img.shields.io/badge/Implementation_Status-grey?style=for-the-badge)](#implementation-status)
-[![Tech Stack](https://img.shields.io/badge/Tech_Stack-grey?style=for-the-badge)](#tech-stack)
-[![Credits](https://img.shields.io/badge/Credits-grey?style=for-the-badge)](#credits)
+Only install one copy of this plugin. Sources and test files are not game plugins.
 
+## Available callouts
 
+| Console command | Current behavior |
+| --- | --- |
+| `StartCallout BrokenDownVehicle` | Original highway breakdown; unchanged in 1.1.1. |
+| `StartCallout SuspectTruckHighway` | Original suspicious truck; unchanged in 1.1.1. |
+| `StartCallout HitAndRunAccident` | Previously repaired hit-and-run; unchanged in 1.1.1. |
+| `StartCallout AbandonedVehicleCountryside` | Rural road: inspect the car, interview the witness, contact the owner. |
+| `StartCallout SuspiciousGasStation` | Fixed gas-station locations: employee statement, plate check, customer explanation. |
+| `StartCallout BarricadedSuspect` | Driver remains inside an SUV. Establish contact, confirm the warrant, order the driver out; the driver flees. |
+| `StartCallout OrganizedVehicleTheft` | Driver starts in a stolen car. Approaching within 60 meters automatically starts a vehicle pursuit and requests one patrol unit. |
+| `StartCallout PoliceVehicleAccident` | Two damaged vehicles, a uniformed officer and a civilian driver; check injuries, record the driver's statement and inspect damage. |
+| `StartCallout BusIncidentFeetOnSeats` | Speak to the driver outside the bus, ask the seated passenger to get out, then warn the passenger. |
 
+The original three callouts retain their existing controls. For the six reworked callouts:
 
-**Patrols Callouts** is built on top of the **LSPDFR** framework and **RAGE Plugin Hook**, and follows a strict "one class per callout" architecture so that each scenario can be developed, tested, and reviewed independently.
+| Key / marker | Action |
+| --- | --- |
+| Yellow GPS point | Travel to the scene. It disappears on arrival. |
+| Blue entity marker | The person or vehicle required for the current step. |
+| Y | Perform the displayed action, on foot and close to the marked target. Release between actions. |
+| B | Request one patrol unit, at most once per callout. |
+| End | Cancel the callout and clean up its owned markers and entities. |
 
----
+There is no scrolling interaction menu in the six reworked scenarios.
+Dialogue stays on screen before the next step becomes available.
+The bus interaction is performed from the front door; boarding the bus is not required.
+If a replacement bus model blocks the passenger's exit, the callout attempts a validated ground placement after 12 seconds.
 
+## Fixes in 1.1.1
 
-## Planned Callouts
+- Pending offers are no longer ended because entities have not yet spawned.
+- Pedestrian positions are validated against the navigation mesh and ground height.
+- Scene creation waits until the player is close enough for collision to load.
+- A blocked or unavailable scene times out with a message instead of spawning floating pedestrians.
+- Street vehicles use the road heading and ground placement; gas stations use fixed forecourts.
+- Help text lasts 2.5 seconds and is refreshed at intervals, replacing the previous 1-millisecond display.
+- One interaction per key press; dialogue is not overwritten every frame by menu feedback.
+- Vehicle theft starts a pursuit on approach, including while the player is in a patrol car.
+- Police accident and bus scenes have their own entities and ordered interactions.
+- Canceling an active pursuit ends that pursuit and releases the callout's owned entities.
+- The three original scenario files and their shared menu/utilities are unchanged.
 
-### Traffic & Roadside
+## Removed at the player's request
 
-**1. Broken Down Vehicle on the Highway** *(implemented — `BrokenDownVehicle.cs`)*  
-> A driver is stranded on the emergency lane. Officers must secure the area, interview the driver, and call a tow truck if needed. The driver may be cooperative, panicked, or hiding something.
+The following six untested scenarios are no longer compiled or registered:
+`WitnessWhoDisappears`, `SuspiciousObjectFound`, `DisturbingDisappearance`,
+`MysteriousCase`, `PersonInDistress`, and `SuspiciousAbandonedVehicle`.
+Their previous source remains recoverable through Git history.
 
-**2. Suspect Truck on the Highway** *(implemented — `SuspectTruckHighway.cs`)*  
-> A truck is reported with a potentially stolen cargo. Officers must check the driver's documents and verify the origin of the load. The driver may cooperate, provide fake papers, or attempt to flee.
+## Validation and remaining in-game checks
 
-**3. Abandoned Vehicle in the Countryside**  
-> A car is found on an isolated road. Officers must examine the vehicle, look for clues, and interview potential witnesses to understand why it was abandoned.
+Release x64 compiles against the locally installed LSPDFR/RPH assemblies.
+The automated regression harness exercises the actual six scenario classes with deterministic API doubles:
 
-**4. Suspicious Gas Station**  
-> An employee reports suspicious behavior. Officers respond and check whether it is a theft, fraud, or the presence of a wanted vehicle.
+- lifecycle before acceptance, delayed ground loading and blocked spawn positions;
+- cleanup after partial spawn failure, cancellation and pursuit completion;
+- automatic vehicle pursuit with exactly one backup request;
+- barricaded driver, accident statements, bus exit and blocked-door recovery;
+- input edge detection, help duration and ordered completion.
 
----
+Run it with:
 
+~~~powershell
+.\tests\Run-Regression.ps1
+~~~
 
-### Investigations
+These are logic tests, **not GTA V playtests**. They cannot validate native execution, physical placement,
+AI driving, vehicle replacements or the final appearance of the HUD. Retest all six reworked scenarios
+in game, including canceling each one and starting another. The 1.1.1 in-game pass is still pending.
 
-**5. Hit-and-Run Accident** *(implemented — `HitAndRunAccident.cs`)*  
-> Two vehicles are involved in an accident, but one driver has fled. Officers must interview witnesses, collect information, and search for the fleeing vehicle.
+If a scene fails, provide the callout name, the last displayed instruction, `RagePluginHook.log`
+and `C:/Temp/patrols_callouts_debug.log`. The plugin logs scene readiness, interaction steps,
+pursuit startup and exceptions.
 
-**6. Witness Who Disappears**  
-> A witness to an assault refuses to cooperate and leaves the scene. Officers must find them again and verify the information they provided.
+## Build
 
-**7. Suspicious Object Found**  
-> A passerby reports an abandoned bag in an alley. Officers must secure the perimeter, look for the owner, and call the appropriate services depending on the situation.
+Requirements: Windows, .NET Framework 4.8 targeting pack, .NET SDK, GTA V with LSPDFR and RAGE Plugin Hook.
 
-**8. Disturbing Disappearance**  
-> A person is reported missing and their relatives have had no news. Officers must gather testimonies, search for the person's vehicle, and follow clues to try to find them.
+~~~powershell
+dotnet build "Patrol Callout.csproj" -c Release -p:Platform=x64 -p:GtaVDirectory="C:\Program Files\Epic Games\GTAV"
+~~~
 
-**9. The Mysterious Case**   
-> Several seemingly unrelated interventions gradually lead to the same investigation. Officers must preserve evidence, cross-reference testimonies, and identify links between different suspects.
+The old nested `Patrol Callout/` project is retained for history and excluded from compilation.
+Build the root project. Test doubles under `tests/` are also excluded from the game DLL.
 
----
+## API references
 
-### Public Order
-
-**10. Person in Distress**  
-> A disoriented person asks for police help. Officers must verify their identity, try to locate their relatives, or request medical assistance if needed.
-
-**11. Bus Incident — Passenger with Feet on the Seats**  
-> A bus driver contacts the police after noticing a passenger placing their feet on passenger seats. Officers must listen to the driver, talk to the passenger, and ask them to remove their feet to respect cleanliness and good conduct rules in public transport.
-
-> Several scenarios can occur: the passenger cooperates immediately, refuses to comply, or becomes disruptive. Depending on the situation, officers can remind the rules, ask the passenger to leave the bus according to applicable procedures, or request backup if the incident escalates. The objective is a realistic intervention where dialogue is the priority, and the response is adapted to the passenger's behavior.
-
----
-
-### Accidents & Incidents
-
-**12. Accident Involving a Police Vehicle**  
-> A patrol car is involved in an accident. Officers must secure the scene, assist the officers involved, and determine the circumstances of the accident.
-
-**13. Suspicious Abandoned Vehicle**  
-> A car is found with the engine running, doors open, and no driver nearby. Officers must examine the scene and look for clues that could lead to another intervention.
-
-**14. Warehouse Intrusion**  
-> An alarm goes off in an industrial area. On arrival, officers must check the premises and determine whether it is a false alarm, an intrusion, or part of a larger criminal operation.
-
----
-
-
-## Implementation Status
-
-| # | Callout | Status |
-|---|---------|--------|
-| 1 | Broken Down Vehicle on Highway | Implemented (`BrokenDownVehicle.cs`) |
-| 2 | Suspect Truck on Highway | Implemented (`SuspectTruckHighway.cs`) |
-| 3 | Abandoned Vehicle in Countryside | Implemented (`AbandonedVehicleCountryside.cs`) |
-| 4 | Suspicious Gas Station | Implemented (`SuspiciousGasStation.cs`) |
-| 5 | Hit-and-Run Accident | Implemented (`HitAndRunAccident.cs`) |
-| 6 | Barricaded Suspect | Implemented (`BarricadedSuspect.cs`) |
-| 7 | Organized Vehicle Theft | Implemented (`OrganizedVehicleTheft.cs`) |
-| 8 | Witness Who Disappears | Implemented (`WitnessWhoDisappears.cs`) |
-| 9 | Suspicious Object Found | Implemented (`SuspiciousObjectFound.cs`) |
-| 10 | Disturbing Disappearance | Implemented (`DisturbingDisappearance.cs`) |
-| 11 | The Mysterious Case | Implemented (`MysteriousCase.cs`) |
-| 12 | Person in Distress | Implemented (`PersonInDistress.cs`) |
-| 13 | Bus Incident — Feet on Seats | Implemented (`BusIncidentFeetOnSeats.cs`) |
-| 14 | Accident Involving Police Vehicle | Implemented (`PoliceVehicleAccident.cs`) |
-| 15 | Suspicious Abandoned Vehicle | Implemented (`SuspiciousAbandonedVehicle.cs`) |
-
-
-**Legend:** In progress · Planned · Backlog
-
----
-
-## Tech Stack
-
-### Backend / Game Runtime
-
-| Technologie | Rôle |
-|---|---|
-| **C# (.NET Framework 4.8)** | Langage principal du plugin |
-| **.NET Framework 4.8** | Runtime ciblé |
-| **Visual Studio 2022** | IDE de développement |
-| **Windows 10/11** | OS cible |
-
-### Game APIs
-
-| Technologie | Rôle |
-|---|---|
-| **RAGE Plugin Hook** | API natives GTA V + hooking |
-| **LSPDFR API** | Framework callouts / police |
-| **Git** | Version control |
-| **GitHub** | Hébergement du code |
-
-
----
+- [LSPDFR API: stolen vehicle example](https://github.com/LMSDev/LSPDFR-API/blob/master/API%20Examples/Albo1125-LSPDFR-API-Guide-Final-Project/Callouts/StolenVehicle.cs) — pursuit creation, suspect registration and player activation.
+- RAGE Plugin Hook XML documentation shipped with package 1.124.0 — `World.GetGroundZ` requires loaded collision and returns null when unavailable; `Game.DisplayHelp` durations are milliseconds.
 
 ## Credits
 
-- **UNWARE STUDIO** — Concept & development
-- **Thomas** — Updates & maintenance
+- **UNWARE STUDIO** — Concept and development
+- **Thomas** — Updates and maintenance
 
----
----

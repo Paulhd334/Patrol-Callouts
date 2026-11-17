@@ -5,6 +5,7 @@
 		<RootNamespace>PatrolsCallouts</RootNamespace>
 		<AssemblyName>PatrolsCallouts</AssemblyName>
 		<Platforms>AnyCPU;x64</Platforms>
+		<Version>1.1.1</Version>
 		<GtaVDirectory Condition="'$(GtaVDirectory)' == ''">C:\Program Files\Epic Games\GTAV</GtaVDirectory>
 	</PropertyGroup>
 
@@ -29,6 +30,7 @@
 	     the SDK's default glob compile its duplicate source and obj files. -->
 	<ItemGroup>
 		<Compile Remove="Patrol Callout\**\*.cs" />
+		<Compile Remove="tests\**\*.cs" />
 		<EmbeddedResource Remove="Patrol Callout\**\*" />
 		<None Remove="Patrol Callout\**\*" />
 	</ItemGroup>

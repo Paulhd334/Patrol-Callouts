@@ -12,7 +12,7 @@ namespace PatrolsCallouts
     public class Main : Plugin
     {
         private const string NomPlugin = "Patrols Callouts";
-        private const string Version = "1.0.0";
+        private const string Version = "1.1.1";
         private const string Auteur = "UNWARE STUDIO";
 
         private const string BadgeTexture = "WEB_LOSSANTOSPOLICEDEPT";
@@ -80,14 +80,8 @@ namespace PatrolsCallouts
     typeof(SuspiciousGasStation),
     typeof(BarricadedSuspect),
     typeof(OrganizedVehicleTheft),
-    typeof(WitnessWhoDisappears),
-    typeof(SuspiciousObjectFound),
-    typeof(DisturbingDisappearance),
-    typeof(MysteriousCase),
-    typeof(PersonInDistress),
     typeof(BusIncidentFeetOnSeats),
-    typeof(PoliceVehicleAccident),
-    typeof(SuspiciousAbandonedVehicle)
+    typeof(PoliceVehicleAccident)
 };
 
             int ok = 0;
